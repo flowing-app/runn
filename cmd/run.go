@@ -45,8 +45,12 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		if flgs.Format == "" {
+
+		switch flgs.Format {
+		case "":
 			opts = append(opts, runn.Capture(runn.NewCmdOut(os.Stdout, flgs.Verbose)))
+		case "json":
+			opts = append(opts, runn.Capture(runn.NewCmdOutJson(os.Stdout)))
 		}
 
 		// setup cache dir

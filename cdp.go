@@ -92,7 +92,7 @@ func (rnr *cdpRunner) Run(_ context.Context, cas CDPActions) error {
 	rnr.operator.capturers.captureCDPStart(rnr.name)
 	defer rnr.operator.capturers.captureCDPEnd(rnr.name)
 
-	// Set a timeout (cdpTimeoutByStep) for each step because Chrome operations may get stuck depending on the actions: specified.
+	// Set a timeout (cdpTimeoutByStep) for each Step because Chrome operations may get stuck depending on the actions: specified.
 	called := false
 	defer func() {
 		called = true

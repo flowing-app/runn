@@ -74,6 +74,9 @@ func (d *cmdOut) CaptureResult(trs Trails, result *RunResult) {
 }
 func (d *cmdOut) CaptureEnd(trs Trails, bookPath, desc string) {}
 
+func (d *cmdOut) CaptureStepStart(step *Step) {}
+func (d *cmdOut) CaptureStepEnd(step *Step)   {}
+
 func (d *cmdOut) CaptureHTTPRequest(name string, req *http.Request)                  {}
 func (d *cmdOut) CaptureHTTPResponse(name string, res *http.Response)                {}
 func (d *cmdOut) CaptureGRPCStart(name string, typ GRPCType, service, method string) {}

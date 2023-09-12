@@ -6,7 +6,7 @@ type TrailType string
 
 const (
 	TrailTypeRunbook    TrailType = "runbook"
-	TrailTypeStep       TrailType = "step"
+	TrailTypeStep       TrailType = "Step"
 	TrailTypeBeforeFunc TrailType = "beforeFunc"
 	TrailTypeAfterFunc  TrailType = "afterFunc"
 )

@@ -12,6 +12,9 @@ type Capturer interface {
 	CaptureResult(trs Trails, result *RunResult)
 	CaptureEnd(trs Trails, bookPath, desc string)
 
+	CaptureStepStart(step *Step)
+	CaptureStepEnd(step *Step)
+
 	CaptureHTTPRequest(name string, req *http.Request)
 	CaptureHTTPResponse(name string, res *http.Response)
 
@@ -57,6 +60,18 @@ func (cs capturers) captureStart(trs Trails, bookPath, desc string) {
 func (cs capturers) captureResult(trs Trails, result *RunResult) {
 	for _, c := range cs {
 		c.CaptureResult(trs, result)
+	}
+}
+
+func (cs capturers) captureStepStart(step *Step) {
+	for _, c := range cs {
+		c.CaptureStepStart(step)
+	}
+}
+
+func (cs capturers) captureStepEnd(step *Step) {
+	for _, c := range cs {
+		c.CaptureStepEnd(step)
 	}
 }
 

@@ -571,7 +571,7 @@ func TestShard(t *testing.T) {
 				operator{}, httpRunner{}, dbRunner{}, grpcRunner{}, cdpRunner{}, sshRunner{},
 			}
 			ignore := []any{
-				step{}, store{}, sql.DB{}, os.File{}, stopw.Span{}, debugger{}, nest.DB{}, Loop{},
+				Step{}, store{}, sql.DB{}, os.File{}, stopw.Span{}, debugger{}, nest.DB{}, Loop{},
 			}
 			dopts := []cmp.Option{
 				cmp.AllowUnexported(allow...),
@@ -940,16 +940,16 @@ func TestStepResult(t *testing.T) {
 			for i, s := range o.steps {
 				got := s.result
 				if got == nil {
-					t.Errorf("want step[%d] result", i)
+					t.Errorf("want Step[%d] result", i)
 					continue
 				}
 				want := tt.want[i]
 				if got.Skipped != want.Skipped {
-					t.Errorf("step[%d] got %v\nwant %v", i, got.Skipped, want.Skipped)
+					t.Errorf("Step[%d] got %v\nwant %v", i, got.Skipped, want.Skipped)
 					continue
 				}
 				if (got.Err == nil) != (want.Err == nil) {
-					t.Errorf("step[%d] got %v\nwant %v", i, got.Err, want.Err)
+					t.Errorf("Step[%d] got %v\nwant %v", i, got.Err, want.Err)
 					continue
 				}
 			}
@@ -992,7 +992,7 @@ func TestStepOutcome(t *testing.T) {
 					}
 					want := tt.want[i]
 					if got != want {
-						t.Errorf("step[%d] got %v\nwant %v", i, got, want)
+						t.Errorf("Step[%d] got %v\nwant %v", i, got, want)
 					}
 					i++
 				}
@@ -1008,7 +1008,7 @@ func TestStepOutcome(t *testing.T) {
 					}
 					want := tt.want[i]
 					if got != want {
-						t.Errorf("step[%d] got %v\nwant %v", i, got, want)
+						t.Errorf("Step[%d] got %v\nwant %v", i, got, want)
 					}
 				}
 			}

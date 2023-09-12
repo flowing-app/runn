@@ -30,7 +30,7 @@ var (
 	yellow = color.New(color.FgYellow).SprintFunc()
 )
 
-var errStepSkiped = errors.New("step skipped")
+var errStepSkiped = errors.New("Step skipped")
 
 var _ otchkiss.Requester = (*operators)(nil)
 
@@ -41,7 +41,7 @@ type operator struct {
 	grpcRunners map[string]*grpcRunner
 	cdpRunners  map[string]*cdpRunner
 	sshRunners  map[string]*sshRunner
-	steps       []*step
+	steps       []*Step
 	store       store
 	desc        string
 	useMap      bool // Use map syntax in `steps:`.
@@ -54,7 +54,7 @@ type operator struct {
 	root     string
 	t        *testing.T
 	thisT    *testing.T
-	parent   *step
+	parent   *Step
 	force    bool
 	failFast bool
 	included bool
@@ -115,7 +115,7 @@ func (o *operator) Close() {
 	}
 }
 
-func (o *operator) runStep(ctx context.Context, i int, s *step) error {
+func (o *operator) runStep(ctx context.Context, i int, s *Step) error {
 	ids := s.trails()
 	o.capturers.setCurrentTrails(ids)
 	defer o.sw.Start(ids.toInterfaceSlice()...).Stop()
@@ -278,6 +278,8 @@ func (o *operator) runStep(ctx context.Context, i int, s *step) error {
 		return nil
 	}
 
+	o.capturers.captureStepStart(s)
+
 	// loop
 	if s.loop != nil {
 		defer func() {
@@ -338,6 +340,7 @@ func (o *operator) runStep(ctx context.Context, i int, s *step) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -548,14 +551,14 @@ func New(opts ...Option) (*operator, error) {
 			if o.newOnly {
 				continue
 			}
-			return nil, fmt.Errorf("failed to append step (%s): %w", o.bookPath, err)
+			return nil, fmt.Errorf("failed to append Step (%s): %w", o.bookPath, err)
 		}
 	}
 
 	return o, nil
 }
 
-// AppendStep appends step.
+// AppendStep appends Step.
 func (o *operator) AppendStep(key string, s map[string]any) error {
 	if o.t != nil {
 		o.t.Helper()
@@ -993,6 +996,7 @@ func (o *operator) runInternal(ctx context.Context) (rerr error) {
 		}
 		err := o.runStep(ctx, i, s)
 		s.setResult(err)
+		o.capturers.captureStepEnd(s)
 		switch {
 		case errors.Is(errStepSkiped, err):
 			o.recordNotRun(i)

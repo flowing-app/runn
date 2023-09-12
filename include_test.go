@@ -39,7 +39,7 @@ func TestIncludeRunnerRun(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run("step length", func(t *testing.T) {
+		t.Run("Step length", func(t *testing.T) {
 			{
 				got := len(r.operator.store.steps)
 				if want := 1; got != want {

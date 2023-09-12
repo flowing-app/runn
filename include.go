@@ -17,7 +17,7 @@ type includeConfig struct {
 	vars     map[string]any
 	skipTest bool
 	force    bool
-	step     *step
+	step     *Step
 }
 
 func newIncludeRunner(o *operator) (*includeRunner, error) {
@@ -31,7 +31,7 @@ func (rnr *includeRunner) Run(ctx context.Context, c *includeConfig) error {
 		rnr.operator.thisT.Helper()
 	}
 	rnr.runResult = nil
-	// c.path must not be variable expanded. Because it will be impossible to identify the step of the included runbook in case of run failure.
+	// c.path must not be variable expanded. Because it will be impossible to identify the Step of the included runbook in case of run failure.
 	ibp := filepath.Join(rnr.operator.root, c.path)
 	// Store before record
 	store := rnr.operator.store.toMap()
@@ -93,7 +93,7 @@ func (rnr *includeRunner) Run(ctx context.Context, c *includeConfig) error {
 }
 
 // newNestedOperator create nested operator.
-func (o *operator) newNestedOperator(parent *step, opts ...Option) (*operator, error) {
+func (o *operator) newNestedOperator(parent *Step, opts ...Option) (*operator, error) {
 	popts := []Option{}
 	popts = append(popts, included(true))
 

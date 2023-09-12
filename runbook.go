@@ -113,7 +113,7 @@ func parseRunbookMapped(b []byte, rb *runbook) error {
 		rb.stepKeys = append(rb.stepKeys, k)
 		rb.Steps = append(rb.Steps, v)
 		if _, ok := keys[k]; ok {
-			return fmt.Errorf("duplicate step keys: %s", k)
+			return fmt.Errorf("duplicate Step keys: %s", k)
 		}
 		keys[k] = struct{}{}
 	}
@@ -339,7 +339,7 @@ func (rb *runbook) toBook() (*book, error) {
 	for _, s := range rb.Steps {
 		v, ok := normalize(s).(map[string]any)
 		if !ok {
-			return nil, fmt.Errorf("failed to normalize step values: %v", s)
+			return nil, fmt.Errorf("failed to normalize Step values: %v", s)
 		}
 		bk.rawSteps = append(bk.rawSteps, v)
 	}

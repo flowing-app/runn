@@ -15,7 +15,7 @@ func TestDumpRunnerRun(t *testing.T) {
 		store store
 		expr  string
 		want  string
-		steps []*step
+		steps []*Step
 	}{
 		{
 			store{},
@@ -84,7 +84,7 @@ func TestDumpRunnerRun(t *testing.T) {
   }
 }
 `,
-			[]*step{
+			[]*Step{
 				{key: "stepkey"},
 				{key: "stepnext"},
 			},
@@ -116,7 +116,7 @@ func TestDumpRunnerRun(t *testing.T) {
   "key": "value"
 }
 `,
-			[]*step{
+			[]*Step{
 				{key: "0"},
 				{key: "1"},
 			},
@@ -157,7 +157,7 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 		store store
 		expr  string
 		want  string
-		steps []*step
+		steps []*Step
 	}{
 		{
 			store{},
@@ -226,7 +226,7 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
   }
 }
 `,
-			[]*step{
+			[]*Step{
 				{key: "stepkey"},
 				{key: "stepnext"},
 			},
@@ -258,7 +258,7 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
   "key": "value"
 }
 `,
-			[]*step{
+			[]*Step{
 				{key: "0"},
 				{key: "1"},
 			},

@@ -2,7 +2,7 @@ package runn
 
 import "errors"
 
-type step struct {
+type Step struct {
 	key           string
 	runnerKey     string
 	desc          string
@@ -28,17 +28,17 @@ type step struct {
 	bindCond      map[string]string
 	includeRunner *includeRunner
 	includeConfig *includeConfig
-	// operator related to step
+	// operator related to Step
 	parent *operator
 	debug  bool
 	result *StepResult
 }
 
-func newStep(key string, parent *operator) *step {
-	return &step{key: key, parent: parent, debug: parent.debug}
+func newStep(key string, parent *operator) *Step {
+	return &Step{key: key, parent: parent, debug: parent.debug}
 }
 
-func (s *step) generateTrail() Trail {
+func (s *Step) generateTrail() Trail {
 	tr := Trail{
 		Type:          TrailTypeStep,
 		Desc:          s.desc,
@@ -71,7 +71,7 @@ func (s *step) generateTrail() Trail {
 	return tr
 }
 
-func (s *step) trails() Trails {
+func (s *Step) trails() Trails {
 	var trs Trails
 	if s.parent != nil {
 		trs = s.parent.trails()
@@ -80,9 +80,9 @@ func (s *step) trails() Trails {
 	return trs
 }
 
-func (s *step) setResult(err error) {
+func (s *Step) setResult(err error) {
 	if s.result != nil {
-		panic("duplicate record of step results")
+		panic("duplicate record of Step results")
 	}
 	var runResult *RunResult
 	if s.includeRunner != nil {
@@ -95,6 +95,6 @@ func (s *step) setResult(err error) {
 	s.result = &StepResult{Key: s.key, Desc: s.desc, Skipped: false, Err: err, IncludedRunResult: runResult}
 }
 
-func (s *step) clearResult() {
+func (s *Step) clearResult() {
 	s.result = nil
 }
