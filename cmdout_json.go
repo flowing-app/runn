@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/goccy/go-json"
 	"google.golang.org/grpc/status"
@@ -30,9 +31,8 @@ type StepResultOut struct {
 }
 
 func (d *CmdOutJson) CaptureStart(trs Trails, bookPath, desc string) {}
-func (d *CmdOutJson) CaptureResult(trs Trails, result *RunResult) {
-}
-func (d *CmdOutJson) CaptureEnd(trs Trails, bookPath, desc string) {}
+func (d *CmdOutJson) CaptureResult(trs Trails, result *RunResult)    {}
+func (d *CmdOutJson) CaptureEnd(trs Trails, bookPath, desc string)   {}
 
 func (d *CmdOutJson) CaptureStepStart(step *Step) {}
 func (d *CmdOutJson) CaptureStepEnd(step *Step) {
@@ -43,10 +43,13 @@ func (d *CmdOutJson) CaptureStepEnd(step *Step) {
 		Skipped: r.Skipped,
 	}
 	if r.Err != nil {
-		o.Err = errors.Unwrap(r.Err).Error()
+		err := errors.Unwrap(r.Err).Error()
+		err = strings.ReplaceAll(err, "\n", "\\n")
+		err = strings.ReplaceAll(err, "\"", "\\\"")
+		o.Err = err
 	}
 
-	b, _ := json.MarshalIndent(o, "", "  ")
+	b, _ := json.Marshal(o)
 	fmt.Fprintf(d.out, "%s\n", b)
 }
 
