@@ -32,15 +32,15 @@ func (d *debugger) CaptureStart(trs Trails, bookPath, desc string) {}
 func (d *debugger) CaptureResult(trs Trails, result *RunResult)    {}
 func (d *debugger) CaptureEnd(trs Trails, bookPath, desc string)   {}
 
-func (d *debugger) CaptureStepStart(step *Step) {}
-func (d *debugger) CaptureStepEnd(step *Step)   {}
+func (d *debugger) CaptureStepStart(step *Step)       {}
+func (d *debugger) CaptureStepEnd(result *StepResult) {}
 
-func (d *debugger) CaptureHTTPRequest(name string, req *http.Request) {
+func (d *debugger) CaptureHTTPRequest(name string, req *http.Request, s *Step) {
 	b, _ := httputil.DumpRequest(req, true)
 	_, _ = fmt.Fprintf(d.out, "-----START HTTP REQUEST-----\n%s\n-----END HTTP REQUEST-----\n", string(b))
 }
 
-func (d *debugger) CaptureHTTPResponse(name string, res *http.Response) {
+func (d *debugger) CaptureHTTPResponse(name string, res *http.Response, s *Step) {
 	b, _ := httputil.DumpResponse(res, true)
 	_, _ = fmt.Fprintf(d.out, "-----START HTTP RESPONSE-----\n%s\n-----END HTTP RESPONSE-----\n", string(b))
 }

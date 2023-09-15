@@ -13,10 +13,10 @@ type Capturer interface {
 	CaptureEnd(trs Trails, bookPath, desc string)
 
 	CaptureStepStart(step *Step)
-	CaptureStepEnd(step *Step)
+	CaptureStepEnd(result *StepResult)
 
-	CaptureHTTPRequest(name string, req *http.Request)
-	CaptureHTTPResponse(name string, res *http.Response)
+	CaptureHTTPRequest(name string, req *http.Request, s *Step)
+	CaptureHTTPResponse(name string, res *http.Response, s *Step)
 
 	CaptureGRPCStart(name string, typ GRPCType, service, method string)
 	CaptureGRPCRequestHeaders(h map[string][]string)
@@ -69,9 +69,9 @@ func (cs capturers) captureStepStart(step *Step) {
 	}
 }
 
-func (cs capturers) captureStepEnd(step *Step) {
+func (cs capturers) captureStepEnd(result *StepResult) {
 	for _, c := range cs {
-		c.CaptureStepEnd(step)
+		c.CaptureStepEnd(result)
 	}
 }
 
@@ -81,15 +81,15 @@ func (cs capturers) captureEnd(trs Trails, bookPath, desc string) {
 	}
 }
 
-func (cs capturers) captureHTTPRequest(name string, req *http.Request) {
+func (cs capturers) captureHTTPRequest(name string, req *http.Request, s *Step) {
 	for _, c := range cs {
-		c.CaptureHTTPRequest(name, req)
+		c.CaptureHTTPRequest(name, req, s)
 	}
 }
 
-func (cs capturers) captureHTTPResponse(name string, res *http.Response) {
+func (cs capturers) captureHTTPResponse(name string, res *http.Response, s *Step) {
 	for _, c := range cs {
-		c.CaptureHTTPResponse(name, res)
+		c.CaptureHTTPResponse(name, res, s)
 	}
 }
 

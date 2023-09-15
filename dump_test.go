@@ -28,10 +28,10 @@ func TestDumpRunnerRun(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
-			"vars.key",
+			"vars.Key",
 			`value
 `,
 			nil,
@@ -40,12 +40,12 @@ func TestDumpRunnerRun(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			"vars",
 			`{
-  "key": "value"
+  "Key": "value"
 }
 `,
 			nil,
@@ -54,7 +54,7 @@ func TestDumpRunnerRun(t *testing.T) {
 			store{
 				steps: []map[string]any{
 					{
-						"key": "value",
+						"Key": "value",
 					},
 				},
 				vars: map[string]any{},
@@ -62,7 +62,7 @@ func TestDumpRunnerRun(t *testing.T) {
 			"steps",
 			`[
   {
-    "key": "value"
+    "Key": "value"
   }
 ]
 `,
@@ -72,7 +72,7 @@ func TestDumpRunnerRun(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				stepMap: map[string]map[string]any{
-					"stepkey": {"key": "value"},
+					"stepkey": {"Key": "value"},
 				},
 				vars:   map[string]any{},
 				useMap: true,
@@ -80,25 +80,25 @@ func TestDumpRunnerRun(t *testing.T) {
 			"steps",
 			`{
   "stepkey": {
-    "key": "value"
+    "Key": "value"
   }
 }
 `,
 			[]*Step{
-				{key: "stepkey"},
-				{key: "stepnext"},
+				{Key: "stepkey"},
+				{Key: "stepnext"},
 			},
 		},
 		{
 			store{
 				steps: []map[string]any{
-					{"key": "value"},
+					{"Key": "value"},
 				},
 				vars: map[string]any{},
 			},
 			"steps[0]",
 			`{
-  "key": "value"
+  "Key": "value"
 }
 `,
 			nil,
@@ -106,19 +106,19 @@ func TestDumpRunnerRun(t *testing.T) {
 		{
 			store{
 				stepMap: map[string]map[string]any{
-					"0": {"key": "value"},
+					"0": {"Key": "value"},
 				},
 				vars:   map[string]any{},
 				useMap: true,
 			},
 			"steps['0']",
 			`{
-  "key": "value"
+  "Key": "value"
 }
 `,
 			[]*Step{
-				{key: "0"},
-				{key: "1"},
+				{Key: "0"},
+				{Key: "1"},
 			},
 		},
 	}
@@ -170,10 +170,10 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
-			"vars.key",
+			"vars.Key",
 			`value
 `,
 			nil,
@@ -182,12 +182,12 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			"vars",
 			`{
-  "key": "value"
+  "Key": "value"
 }
 `,
 			nil,
@@ -196,7 +196,7 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 			store{
 				steps: []map[string]any{
 					{
-						"key": "value",
+						"Key": "value",
 					},
 				},
 				vars: map[string]any{},
@@ -204,7 +204,7 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 			"steps",
 			`[
   {
-    "key": "value"
+    "Key": "value"
   }
 ]
 `,
@@ -214,7 +214,7 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				stepMap: map[string]map[string]any{
-					"stepkey": {"key": "value"},
+					"stepkey": {"Key": "value"},
 				},
 				vars:   map[string]any{},
 				useMap: true,
@@ -222,25 +222,25 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 			"steps",
 			`{
   "stepkey": {
-    "key": "value"
+    "Key": "value"
   }
 }
 `,
 			[]*Step{
-				{key: "stepkey"},
-				{key: "stepnext"},
+				{Key: "stepkey"},
+				{Key: "stepnext"},
 			},
 		},
 		{
 			store{
 				steps: []map[string]any{
-					{"key": "value"},
+					{"Key": "value"},
 				},
 				vars: map[string]any{},
 			},
 			"steps[0]",
 			`{
-  "key": "value"
+  "Key": "value"
 }
 `,
 			nil,
@@ -248,19 +248,19 @@ func TestDumpRunnerRunWithOut(t *testing.T) {
 		{
 			store{
 				stepMap: map[string]map[string]any{
-					"0": {"key": "value"},
+					"0": {"Key": "value"},
 				},
 				vars:   map[string]any{},
 				useMap: true,
 			},
 			"steps['0']",
 			`{
-  "key": "value"
+  "Key": "value"
 }
 `,
 			[]*Step{
-				{key: "0"},
-				{key: "1"},
+				{Key: "0"},
+				{Key: "1"},
 			},
 		},
 	}
@@ -327,28 +327,28 @@ func TestDumpRunnerRunWithExpandOut(t *testing.T) {
 		{
 			store{
 				vars: map[string]any{
-					"key": filepath.Join(tmp, "value"),
+					"Key": filepath.Join(tmp, "value"),
 				},
 			},
-			"{{ vars.key }}",
+			"{{ vars.Key }}",
 			filepath.Join(tmp, "value"),
 		},
 		{
 			store{
 				vars: map[string]any{
-					"key": filepath.Join(tmp, "value2"),
+					"Key": filepath.Join(tmp, "value2"),
 				},
 			},
-			"{{ vars.key + '.ext' }}",
+			"{{ vars.Key + '.ext' }}",
 			filepath.Join(tmp, "value2.ext"),
 		},
 		{
 			store{
 				vars: map[string]any{
-					"key": filepath.Join(tmp, "value3"),
+					"Key": filepath.Join(tmp, "value3"),
 				},
 			},
-			"{{ vars.key }}.ext",
+			"{{ vars.Key }}.ext",
 			filepath.Join(tmp, "value3.ext"),
 		},
 	}

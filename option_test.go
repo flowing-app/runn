@@ -567,23 +567,23 @@ func TestOptionVar(t *testing.T) {
 	}{
 		{
 			map[string]any{},
-			"key", "value",
+			"Key", "value",
 			map[string]any{
-				"key": "value",
+				"Key": "value",
 			},
 		},
 		{
 			map[string]any{},
-			"key", 3,
+			"Key", 3,
 			map[string]any{
-				"key": 3,
+				"Key": 3,
 			},
 		},
 		{
 			map[string]any{},
-			[]string{"key"}, "value",
+			[]string{"Key"}, "value",
 			map[string]any{
-				"key": "value",
+				"Key": "value",
 			},
 		},
 		{
@@ -743,7 +743,7 @@ func TestOptionGRPCNoTLS(t *testing.T) {
 				key := fmt.Sprintf("greq%d", i)
 				r, ok := o.grpcRunners[key]
 				if !ok {
-					t.Errorf("invalid key: %s", key)
+					t.Errorf("invalid Key: %s", key)
 				}
 				got = append(got, *r.tls)
 			}

@@ -60,7 +60,7 @@ type runResultSimplified struct {
 }
 
 type stepResultSimplified struct {
-	Key               string               `json:"key"`
+	Key               string               `json:"Key"`
 	Result            result               `json:"result"`
 	IncludedRunResult *runResultSimplified `json:"included_run_result,omitempty"`
 }

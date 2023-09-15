@@ -16,7 +16,7 @@ type httpRunnerConfig struct {
 	MultipartBoundary    string `yaml:"multipartBoundary,omitempty"`
 	CACert               string `yaml:"cacert,omitempty"`
 	Cert                 string `yaml:"cert,omitempty"`
-	Key                  string `yaml:"key,omitempty"`
+	Key                  string `yaml:"Key,omitempty"`
 	SkipVerify           bool   `yaml:"skipVerify,omitempty"`
 	Timeout              string `yaml:"timeout,omitempty"`
 	UseCookie            *bool  `yaml:"useCookie,omitempty"`
@@ -29,7 +29,7 @@ type grpcRunnerConfig struct {
 	TLS         *bool    `yaml:"tls,omitempty"`
 	CACert      string   `yaml:"cacert,omitempty"`
 	Cert        string   `yaml:"cert,omitempty"`
-	Key         string   `yaml:"key,omitempty"`
+	Key         string   `yaml:"Key,omitempty"`
 	SkipVerify  bool     `yaml:"skipVerify,omitempty"`
 	ImportPaths []string `yaml:"importPaths,omitempty"`
 	Protos      []string `yaml:"protos,omitempty"`

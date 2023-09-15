@@ -551,7 +551,7 @@ func Var(k any, v any) Option {
 			}
 			vars[kk[len(kk)-1]] = ev
 		default:
-			return fmt.Errorf("invalid key of var: %v", k)
+			return fmt.Errorf("invalid Key of var: %v", k)
 		}
 		return nil
 	}

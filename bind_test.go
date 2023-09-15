@@ -37,19 +37,19 @@ func TestBindRunnerRun(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 				bindVars: map[string]any{},
 			},
 			map[string]string{
-				"newkey": "vars.key",
+				"newkey": "vars.Key",
 			},
 			store{
 				steps: []map[string]any{
 					{"run": true},
 				},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 				bindVars: map[string]any{
 					"newkey": "value",
@@ -60,7 +60,7 @@ func TestBindRunnerRun(t *testing.T) {
 					{"run": true},
 				},
 				"vars": map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 				"newkey": "value",
 			},

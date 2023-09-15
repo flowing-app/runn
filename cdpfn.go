@@ -278,7 +278,7 @@ var CDPFnMap = map[string]CDPFn{
 		},
 		Args: CDPFnArgs{
 			{CDPArgTypeArg, "origin", "https://github.com"},
-			{CDPArgTypeRes, "items", `{"key": "value"}`},
+			{CDPArgTypeRes, "items", `{"Key": "value"}`},
 		},
 		Aliases: []string{"getLocalStorage"},
 	},
@@ -312,7 +312,7 @@ var CDPFnMap = map[string]CDPFn{
 		},
 		Args: CDPFnArgs{
 			{CDPArgTypeArg, "origin", "https://github.com"},
-			{CDPArgTypeRes, "items", `{"key": "value"}`},
+			{CDPArgTypeRes, "items", `{"Key": "value"}`},
 		},
 		Aliases: []string{"getSessionStorage"},
 	},

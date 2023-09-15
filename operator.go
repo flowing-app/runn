@@ -165,7 +165,7 @@ func (o *operator) runStep(ctx context.Context, i int, s *Step) error {
 			if err != nil {
 				return err
 			}
-			if err := s.httpRunner.Run(ctx, req); err != nil {
+			if err := s.httpRunner.Run(ctx, req, s); err != nil {
 				return fmt.Errorf("http request failed on %s: %w", o.stepName(i), err)
 			}
 			run = true
@@ -383,8 +383,8 @@ func (o *operator) recordAsMapped(v map[string]any) {
 		// delete values of prevous loop
 		o.store.removeLatestAsMapped()
 	}
-	// Get next key
-	k := o.steps[o.store.length()].key
+	// Get next Key
+	k := o.steps[o.store.length()].Key
 	o.store.recordAsMapped(k, v)
 }
 
@@ -996,7 +996,7 @@ func (o *operator) runInternal(ctx context.Context) (rerr error) {
 		}
 		err := o.runStep(ctx, i, s)
 		s.setResult(err)
-		o.capturers.captureStepEnd(s)
+		o.capturers.captureStepEnd(s.result)
 		switch {
 		case errors.Is(errStepSkiped, err):
 			o.recordNotRun(i)
@@ -1041,7 +1041,7 @@ func (o *operator) stepName(i int) string {
 		prefix = fmt.Sprintf(".loop[%d]", *o.store.loopIndex)
 	}
 	if o.useMap {
-		return fmt.Sprintf("'%s'.steps.%s%s", o.desc, o.steps[i].key, prefix)
+		return fmt.Sprintf("'%s'.steps.%s%s", o.desc, o.steps[i].Key, prefix)
 	}
 
 	return fmt.Sprintf("'%s'.steps[%d]%s", o.desc, i, prefix)

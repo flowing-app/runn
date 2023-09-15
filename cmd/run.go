@@ -28,6 +28,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/k1LoW/runn/capture"
+
 	"github.com/k1LoW/runn"
 	"github.com/spf13/cobra"
 )
@@ -50,7 +52,7 @@ var runCmd = &cobra.Command{
 		case "":
 			opts = append(opts, runn.Capture(runn.NewCmdOut(os.Stdout, flgs.Verbose)))
 		case "json":
-			opts = append(opts, runn.Capture(runn.NewCmdOutJson(os.Stdout)))
+			opts = append(opts, runn.Capture(capture.NewCmdOutJson(os.Stdout)))
 		}
 
 		// setup cache dir

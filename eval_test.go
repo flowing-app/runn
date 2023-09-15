@@ -15,26 +15,26 @@ func TestBuildTree(t *testing.T) {
 		want  string
 	}{
 		{
-			"vars.key == 'hello'",
+			"vars.Key == 'hello'",
 			map[string]any{
 				"vars": map[string]any{
-					"key": "hello",
+					"Key": "hello",
 				},
 			},
-			`vars.key == 'hello'
-├── vars.key => "hello"
+			`vars.Key == 'hello'
+├── vars.Key => "hello"
 └── "hello" => "hello"
 `,
 		},
 		{
-			"vars['key'] == 'hello'",
+			"vars['Key'] == 'hello'",
 			map[string]any{
 				"vars": map[string]any{
-					"key": "hello",
+					"Key": "hello",
 				},
 			},
-			`vars['key'] == 'hello'
-├── vars.key => "hello"
+			`vars['Key'] == 'hello'
+├── vars.Key => "hello"
 └── "hello" => "hello"
 `,
 		},
@@ -48,19 +48,19 @@ func TestBuildTree(t *testing.T) {
 `,
 		},
 		{
-			"printf('%s world', vars.key) == 'hello world'",
+			"printf('%s world', vars.Key) == 'hello world'",
 			map[string]any{
 				"vars": map[string]any{
-					"key": "hello",
+					"Key": "hello",
 				},
 				"printf": func(format string, a ...any) string {
 					return fmt.Sprintf(format, a...)
 				},
 			},
-			`printf('%s world', vars.key) == 'hello world'
-├── printf("%s world", vars.key) => "hello world"
+			`printf('%s world', vars.Key) == 'hello world'
+├── printf("%s world", vars.Key) => "hello world"
 ├── "%s world" => "%s world"
-├── vars.key => "hello"
+├── vars.Key => "hello"
 └── "hello world" => "hello world"
 `,
 		},
@@ -113,14 +113,14 @@ func TestBuildTree(t *testing.T) {
 `,
 		},
 		{
-			`vars.key == "hello\nworld"`,
+			`vars.Key == "hello\nworld"`,
 			map[string]any{
 				"vars": map[string]any{
-					"key": "hello",
+					"Key": "hello",
 				},
 			},
-			`vars.key == "hello\nworld"
-├── vars.key => "hello"
+			`vars.Key == "hello\nworld"
+├── vars.Key => "hello"
 └── "hello\nworld" => "hello
     world"
 `,
@@ -150,13 +150,13 @@ func TestValues(t *testing.T) {
 		{`true != false`, []string{`true`, `false`}},
 		{`nil`, []string{`<nil>`}},
 		{`body contains "<h1>hello</hello>"`, []string{"body", `"<h1>hello</hello>"`}},
-		{`res.body.data.key contains "xxxxxx"`, []string{"res.body.data.key", `"xxxxxx"`}},
+		{`res.body.data.Key contains "xxxxxx"`, []string{"res.body.data.Key", `"xxxxxx"`}},
 		{`res.headers["Content-Type"] == "application/json"`, []string{`res.headers["Content-Type"]`, `"application/json"`}},
 		{`current.rows[0]`, []string{`current.rows[0]`}},
-		{`body[0]["key"].data`, []string{`body[0].key.data`}},
+		{`body[0]["Key"].data`, []string{`body[0].Key.data`}},
 		{`res.headers["Content-Type"][0] == "application/json"`, []string{`res.headers["Content-Type"][0]`, `"application/json"`}},
 		{`res.body.data.projects[0].name == "myproject"`, []string{`res.body.data.projects[0].name`, `"myproject"`}},
-		{`printf('%s world', vars.key) == 'hello world'`, []string{`printf("%s world", vars.key)`, `"%s world"`, `vars.key`, `"hello world"`}},
+		{`printf('%s world', vars.Key) == 'hello world'`, []string{`printf("%s world", vars.Key)`, `"%s world"`, `vars.Key`, `"hello world"`}},
 		{`compare(steps[8].res.body, vars.wantBody, "Content-Length")`, []string{`compare(steps[8].res.body, vars.wantBody, "Content-Length")`, `steps[8].res.body`, `vars.wantBody`, `"Content-Length"`}},
 		{`len("hello")`, []string{`len("hello")`, `"hello"`}},
 		{`vars.tests[i]`, []string{`vars.tests[i]`}},

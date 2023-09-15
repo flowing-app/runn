@@ -74,11 +74,11 @@ func (d *cmdOut) CaptureResult(trs Trails, result *RunResult) {
 }
 func (d *cmdOut) CaptureEnd(trs Trails, bookPath, desc string) {}
 
-func (d *cmdOut) CaptureStepStart(step *Step) {}
-func (d *cmdOut) CaptureStepEnd(step *Step)   {}
+func (d *cmdOut) CaptureStepStart(step *Step)       {}
+func (d *cmdOut) CaptureStepEnd(result *StepResult) {}
 
-func (d *cmdOut) CaptureHTTPRequest(name string, req *http.Request)                  {}
-func (d *cmdOut) CaptureHTTPResponse(name string, res *http.Response)                {}
+func (d *cmdOut) CaptureHTTPRequest(name string, req *http.Request, s *Step)         {}
+func (d *cmdOut) CaptureHTTPResponse(name string, res *http.Response, s *Step)       {}
 func (d *cmdOut) CaptureGRPCStart(name string, typ GRPCType, service, method string) {}
 func (d *cmdOut) CaptureGRPCRequestHeaders(h map[string][]string)                    {}
 func (d *cmdOut) CaptureGRPCRequestMessage(m map[string]any)                         {}

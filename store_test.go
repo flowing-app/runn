@@ -23,7 +23,7 @@ func TestToMap(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			[]string{"env", "vars", "steps"},
@@ -37,7 +37,7 @@ func TestToMap(t *testing.T) {
 		{
 			store{
 				parentVars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			[]string{"env", "vars", "steps", "parent"},
@@ -94,7 +94,7 @@ func TestToNormalizedMap(t *testing.T) {
 			store{
 				steps: []map[string]any{},
 				vars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			[]string{"env", "vars", "steps"},
@@ -108,7 +108,7 @@ func TestToNormalizedMap(t *testing.T) {
 		{
 			store{
 				parentVars: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			[]string{"env", "vars", "steps"},

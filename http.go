@@ -290,7 +290,7 @@ func isLocalhost(domain string) (bool, error) {
 	return false, nil
 }
 
-func (rnr *httpRunner) Run(ctx context.Context, r *httpRequest) error {
+func (rnr *httpRunner) Run(ctx context.Context, r *httpRequest, s *Step) error {
 	r.multipartBoundary = rnr.multipartBoundary
 	r.root = rnr.operator.root
 	reqBody, err := r.encodeBody()
@@ -366,7 +366,7 @@ func (rnr *httpRunner) Run(ctx context.Context, r *httpRequest) error {
 			}
 		}
 
-		rnr.operator.capturers.captureHTTPRequest(rnr.name, req)
+		rnr.operator.capturers.captureHTTPRequest(rnr.name, req, s)
 
 		if err := rnr.validator.ValidateRequest(ctx, req); err != nil {
 			return err
@@ -386,7 +386,7 @@ func (rnr *httpRunner) Run(ctx context.Context, r *httpRequest) error {
 			req.Header.Set(k, v)
 		}
 
-		rnr.operator.capturers.captureHTTPRequest(rnr.name, req)
+		rnr.operator.capturers.captureHTTPRequest(rnr.name, req, s)
 
 		if err := rnr.validator.ValidateRequest(ctx, req); err != nil {
 			return err
@@ -399,7 +399,7 @@ func (rnr *httpRunner) Run(ctx context.Context, r *httpRequest) error {
 		return fmt.Errorf("invalid http runner: %s", rnr.name)
 	}
 
-	rnr.operator.capturers.captureHTTPResponse(rnr.name, res)
+	rnr.operator.capturers.captureHTTPResponse(rnr.name, res, s)
 
 	if err := rnr.validator.ValidateResponse(ctx, req, res); err != nil {
 		var target *UnsupportedError

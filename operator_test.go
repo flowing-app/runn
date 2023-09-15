@@ -34,14 +34,14 @@ func TestExpand(t *testing.T) {
 		{
 			[]map[string]any{},
 			map[string]any{},
-			map[string]string{"key": "val"},
-			map[string]any{"key": "val"},
+			map[string]string{"Key": "val"},
+			map[string]any{"Key": "val"},
 		},
 		{
 			[]map[string]any{},
 			map[string]any{"one": "ichi"},
-			map[string]string{"key": "{{ vars.one }}"},
-			map[string]any{"key": "ichi"},
+			map[string]string{"Key": "{{ vars.one }}"},
+			map[string]any{"Key": "ichi"},
 		},
 		{
 			[]map[string]any{},
@@ -52,20 +52,20 @@ func TestExpand(t *testing.T) {
 		{
 			[]map[string]any{},
 			map[string]any{"one": 1},
-			map[string]string{"key": "{{ vars.one }}"},
-			map[string]any{"key": uint64(1)},
+			map[string]string{"Key": "{{ vars.one }}"},
+			map[string]any{"Key": uint64(1)},
 		},
 		{
 			[]map[string]any{},
 			map[string]any{"one": 1},
-			map[string]string{"key": "{{ vars.one + 1 }}"},
-			map[string]any{"key": uint64(2)},
+			map[string]string{"Key": "{{ vars.one + 1 }}"},
+			map[string]any{"Key": uint64(2)},
 		},
 		{
 			[]map[string]any{},
 			map[string]any{"one": 1},
-			map[string]string{"key": "{{ string(vars.one) }}"},
-			map[string]any{"key": "1"},
+			map[string]string{"Key": "{{ string(vars.one) }}"},
+			map[string]any{"Key": "1"},
 		},
 		{
 			[]map[string]any{},

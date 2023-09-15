@@ -24,7 +24,7 @@ func TestParseHTTPRequest(t *testing.T) {
   post:
     body:
       application/json:
-        key: value
+        Key: value
 `,
 			&httpRequest{
 				path:      "/login",
@@ -32,7 +32,7 @@ func TestParseHTTPRequest(t *testing.T) {
 				mediaType: MediaTypeApplicationJSON,
 				headers:   map[string]string{},
 				body: map[string]any{
-					"key": "value",
+					"Key": "value",
 				},
 			},
 			false,
@@ -199,7 +199,7 @@ my.custom.server.Service/Method:
   headers:
     user-agent: "runn/dev"
   message:
-    key: value
+    Key: value
     foo: bar
 `,
 			&grpcRequest{
@@ -212,7 +212,7 @@ my.custom.server.Service/Method:
 					{
 						op: GRPCOpMessage,
 						params: map[string]any{
-							"key": "value",
+							"Key": "value",
 							"foo": "bar",
 						},
 					},
@@ -225,7 +225,7 @@ my.custom.server.Service/Method:
 my.custom.server.Service/Method:
   messages:
     -
-      key: value
+      Key: value
       foo: bar
     -
       one: two
@@ -238,7 +238,7 @@ my.custom.server.Service/Method:
 					{
 						op: GRPCOpMessage,
 						params: map[string]any{
-							"key": "value",
+							"Key": "value",
 							"foo": "bar",
 						},
 					},
@@ -257,7 +257,7 @@ my.custom.server.Service/Method:
 my.custom.server.Service/Method:
   messages:
     -
-      key: value
+      Key: value
     -
       receive
     -
@@ -273,7 +273,7 @@ my.custom.server.Service/Method:
 					{
 						op: GRPCOpMessage,
 						params: map[string]any{
-							"key": "value",
+							"Key": "value",
 						},
 					},
 					{

@@ -3,7 +3,7 @@ package runn
 import "errors"
 
 type Step struct {
-	key           string
+	Key           string
 	runnerKey     string
 	desc          string
 	ifCond        string
@@ -35,14 +35,14 @@ type Step struct {
 }
 
 func newStep(key string, parent *operator) *Step {
-	return &Step{key: key, parent: parent, debug: parent.debug}
+	return &Step{Key: key, parent: parent, debug: parent.debug}
 }
 
 func (s *Step) generateTrail() Trail {
 	tr := Trail{
 		Type:          TrailTypeStep,
 		Desc:          s.desc,
-		StepKey:       s.key,
+		StepKey:       s.Key,
 		StepRunnerKey: s.runnerKey,
 	}
 	switch {
@@ -89,10 +89,10 @@ func (s *Step) setResult(err error) {
 		runResult = s.includeRunner.runResult
 	}
 	if errors.Is(errStepSkiped, err) {
-		s.result = &StepResult{Key: s.key, Desc: s.desc, Skipped: true, Err: nil, IncludedRunResult: runResult}
+		s.result = &StepResult{Key: s.Key, Desc: s.desc, Skipped: true, Err: nil, IncludedRunResult: runResult}
 		return
 	}
-	s.result = &StepResult{Key: s.key, Desc: s.desc, Skipped: false, Err: err, IncludedRunResult: runResult}
+	s.result = &StepResult{Key: s.Key, Desc: s.desc, Skipped: false, Err: err, IncludedRunResult: runResult}
 }
 
 func (s *Step) clearResult() {

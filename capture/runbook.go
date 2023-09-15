@@ -101,10 +101,10 @@ func (c *cRunbook) CaptureResult(trs runn.Trails, result *runn.RunResult) {
 
 func (c *cRunbook) CaptureEnd(trs runn.Trails, bookPath, desc string) {}
 
-func (c *cRunbook) CaptureStepStart(step *runn.Step) {}
-func (c *cRunbook) CaptureStepEnd(step *runn.Step)   {}
+func (c *cRunbook) CaptureStepStart(step *runn.Step)       {}
+func (c *cRunbook) CaptureStepEnd(result *runn.StepResult) {}
 
-func (c *cRunbook) CaptureHTTPRequest(name string, req *http.Request) {
+func (c *cRunbook) CaptureHTTPRequest(name string, req *http.Request, s *runn.Step) {
 	const dummyDsn = "[THIS IS HTTP RUNNER]"
 	if v, ok := c.runners[name]; ok {
 		c.setRunner(name, v)
@@ -125,7 +125,7 @@ func (c *cRunbook) CaptureHTTPRequest(name string, req *http.Request) {
 	r.Steps = append(r.Steps, step)
 }
 
-func (c *cRunbook) CaptureHTTPResponse(name string, res *http.Response) {
+func (c *cRunbook) CaptureHTTPResponse(name string, res *http.Response, s *runn.Step) {
 	r := c.currentRunbook()
 	step := r.latestStep()
 	// status
