@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 type StepOut struct {
@@ -63,6 +64,8 @@ type StepOutRes struct {
 }
 
 func NewStepOutRes(r *http.Response) (*StepOutRes, error) {
+	status := strconv.Itoa(r.StatusCode)
+
 	header := make(map[string][]string)
 	for k, v := range r.Header {
 		header[k] = v
@@ -75,7 +78,7 @@ func NewStepOutRes(r *http.Response) (*StepOutRes, error) {
 	defer r.Body.Close()
 	r.Body = io.NopCloser(bytes.NewBuffer(body))
 
-	return newStepOutRes(r.Status, header, string(body)), nil
+	return newStepOutRes(status, header, string(body)), nil
 
 }
 
