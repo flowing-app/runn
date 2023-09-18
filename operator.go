@@ -253,7 +253,7 @@ func (o *operator) runStep(ctx context.Context, i int, s *Step) error {
 			run = true
 		}
 		// test runner
-		if s.testRunner != nil && s.testCond != "" {
+		if s.testRunner != nil && s.TestCond != "" {
 			if o.skipTest {
 				o.Debugf(yellow("Skip '%s' on %s\n"), testRunnerKey, o.stepName(i))
 				if !run {
@@ -262,7 +262,7 @@ func (o *operator) runStep(ctx context.Context, i int, s *Step) error {
 				return nil
 			}
 			o.Debugf(cyan("Run '%s' on %s\n"), testRunnerKey, o.stepName(i))
-			if err := s.testRunner.Run(ctx, s.testCond, !run); err != nil {
+			if err := s.testRunner.Run(ctx, s.TestCond, !run); err != nil {
 				if s.desc != "" {
 					return fmt.Errorf("test failed on %s '%s': %w", o.stepName(i), s.desc, err)
 				} else {
@@ -599,12 +599,12 @@ func (o *operator) AppendStep(key string, s map[string]any) error {
 		switch vv := v.(type) {
 		case bool:
 			if vv {
-				step.testCond = "true"
+				step.TestCond = "true"
 			} else {
-				step.testCond = "false"
+				step.TestCond = "false"
 			}
 		case string:
-			step.testCond = vv
+			step.TestCond = vv
 		default:
 			return fmt.Errorf("invalid test condition: %v", v)
 		}

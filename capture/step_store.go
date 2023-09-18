@@ -1,5 +1,11 @@
 package capture
 
+const (
+	storeReqKey  = "req"
+	storeResKey  = "res"
+	storeCondKey = "cond"
+)
+
 type stepStore map[string]map[string]any
 
 func (ss stepStore) get(key string) map[string]any {
@@ -46,4 +52,23 @@ func (ss stepStore) getRes(key string) *StepOutRes {
 	}
 
 	return res
+}
+
+func (ss stepStore) getCond(key string) string {
+	step := ss.get(key)
+	if step == nil {
+		return ""
+	}
+
+	v, ok := step[storeCondKey]
+	if !ok {
+		return ""
+	}
+
+	cond, ok := v.(string)
+	if !ok {
+		return ""
+	}
+
+	return cond
 }

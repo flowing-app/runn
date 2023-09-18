@@ -13,11 +13,12 @@ type StepOut struct {
 	Skipped bool        `json:"skipped"`
 	Req     *StepOutReq `json:"req"`
 	Res     *StepOutRes `json:"res"`
+	Cond    string      `json:"cond"`
 	Err     string      `json:"err"`
 }
 
 type StepOutReq struct {
-	URI    string              `json:"URI"`
+	URL    string              `json:"URL"`
 	Header map[string][]string `json:"header"`
 	Body   string              `json:"body"`
 }
@@ -49,7 +50,7 @@ func NewStepOutReq(r *http.Request) (*StepOutReq, error) {
 
 func newStepOutReq(URI string, header map[string][]string, body string) *StepOutReq {
 	return &StepOutReq{
-		URI:    URI,
+		URL:    URI,
 		Header: header,
 		Body:   body,
 	}

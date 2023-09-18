@@ -21,7 +21,7 @@ type Step struct {
 	execRunner    *execRunner
 	execCommand   map[string]any
 	testRunner    *testRunner
-	testCond      string
+	TestCond      string
 	dumpRunner    *dumpRunner
 	dumpRequest   *dumpRequest
 	bindRunner    *bindRunner
@@ -64,7 +64,7 @@ func (s *Step) generateTrail() Trail {
 		tr.StepRunnerType = RunnerTypeDump
 	case s.bindRunner != nil && s.bindCond != nil:
 		tr.StepRunnerType = RunnerTypeBind
-	case s.testRunner != nil && s.testCond != "":
+	case s.testRunner != nil && s.TestCond != "":
 		tr.StepRunnerType = RunnerTypeTest
 	}
 

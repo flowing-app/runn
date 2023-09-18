@@ -15,11 +15,6 @@ import (
 
 var _ runn.Capturer = (*CmdOutJson)(nil)
 
-const (
-	storeReqKey = "req"
-	storeResKey = "res"
-)
-
 type CmdOutJson struct {
 	out   io.Writer
 	store stepStore
@@ -38,6 +33,7 @@ func (d *CmdOutJson) CaptureEnd(trs runn.Trails, bookPath, desc string)     {}
 
 func (d *CmdOutJson) CaptureStepStart(step *runn.Step) {
 	d.store[step.Key] = make(map[string]any)
+	d.store[step.Key][storeCondKey] = step.TestCond
 }
 func (d *CmdOutJson) CaptureStepEnd(result *runn.StepResult) {
 	o := StepOut{
@@ -46,13 +42,12 @@ func (d *CmdOutJson) CaptureStepEnd(result *runn.StepResult) {
 		Skipped: result.Skipped,
 		Req:     d.store.getReq(result.Key),
 		Res:     d.store.getRes(result.Key),
+		Cond:    fmtEscaped(d.store.getCond(result.Key)),
 	}
 
 	if result.Err != nil {
 		err := errors.Unwrap(result.Err).Error()
-		err = strings.ReplaceAll(err, "\n", "\\n")
-		err = strings.ReplaceAll(err, "\"", "\\\"")
-		o.Err = err
+		o.Err = fmtEscaped(err)
 	}
 
 	b, _ := json.MarshalIndent(o, "", "  ")
@@ -99,4 +94,10 @@ func (d *CmdOutJson) CaptureExecStderr(stderr string)                           
 func (d *CmdOutJson) SetCurrentTrails(trs runn.Trails)                                        {}
 func (d *CmdOutJson) Errs() error {
 	return nil
+}
+
+func fmtEscaped(s string) string {
+	s = strings.ReplaceAll(s, "\n", "\\n")
+	s = strings.ReplaceAll(s, "\"", "\\\"")
+	return s
 }
