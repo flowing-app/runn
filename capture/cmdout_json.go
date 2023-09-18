@@ -33,16 +33,16 @@ func (d *CmdOutJson) CaptureEnd(trs runn.Trails, bookPath, desc string)     {}
 
 func (d *CmdOutJson) CaptureStepStart(step *runn.Step) {
 	d.store[step.Key] = make(map[string]any)
-	d.store[step.Key][storeCondKey] = step.TestCond
+	d.store.saveCond(step.Key, step.TestCond)
 }
 func (d *CmdOutJson) CaptureStepEnd(result *runn.StepResult) {
-	o := StepOut{
+	o := stepOut{
 		Key:     result.Key,
 		Desc:    result.Desc,
 		Skipped: result.Skipped,
 		Req:     d.store.getReq(result.Key),
 		Res:     d.store.getRes(result.Key),
-		Cond:    fmtEscaped(d.store.getCond(result.Key)),
+		Cond:    fmtEscapeds(d.store.getCond(result.Key)),
 	}
 
 	if result.Err != nil {
@@ -58,15 +58,18 @@ func (d *CmdOutJson) CaptureHTTPRequest(name string, req *http.Request, s *runn.
 	if _, ok := d.store[s.Key]; !ok {
 		panic(fmt.Sprintf("step '%s' is not inittied", s.Key))
 	}
-	reqOut, _ := NewStepOutReq(req)
-	d.store[s.Key][storeReqKey] = reqOut
+
+	if err := d.store.saveReq(s.Key, req); err != nil {
+		panic(fmt.Sprintf("failed to save request: %v", err))
+	}
 }
 func (d *CmdOutJson) CaptureHTTPResponse(name string, res *http.Response, s *runn.Step) {
 	if _, ok := d.store[s.Key]; !ok {
 		panic(fmt.Sprintf("step '%s' is not inittied", s.Key))
 	}
-	resOut, _ := NewStepOutRes(res)
-	d.store[s.Key][storeResKey] = resOut
+	if err := d.store.saveRes(s.Key, res); err != nil {
+		panic(fmt.Sprintf("failed to save response: %v", err))
+	}
 }
 
 func (d *CmdOutJson) CaptureGRPCStart(name string, typ runn.GRPCType, service, method string) {}
@@ -100,4 +103,12 @@ func fmtEscaped(s string) string {
 	s = strings.ReplaceAll(s, "\n", "\\n")
 	s = strings.ReplaceAll(s, "\"", "\\\"")
 	return s
+}
+
+func fmtEscapeds(ss []string) []string {
+	fmted := make([]string, len(ss))
+	for i, s := range ss {
+		fmted[i] = fmtEscaped(s)
+	}
+	return fmted
 }
