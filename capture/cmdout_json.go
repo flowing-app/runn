@@ -34,14 +34,16 @@ func (d *CmdOutJson) CaptureEnd(trs runn.Trails, bookPath, desc string)     {}
 func (d *CmdOutJson) CaptureStepStart(step *runn.Step) {
 	d.store[step.Key] = make(map[string]any)
 	d.store.saveCond(step.Key, step.TestCond)
+	d.store.saveBookPath(step.Key, step.Parent.BookPath())
 }
 func (d *CmdOutJson) CaptureStepEnd(result *runn.StepResult) {
 	o := stepOut{
-		Key:     result.Key,
-		Desc:    result.Desc,
-		Skipped: result.Skipped,
-		Req:     d.store.getReq(result.Key),
-		Res:     d.store.getRes(result.Key),
+		Key:      result.Key,
+		Desc:     result.Desc,
+		Skipped:  result.Skipped,
+		Req:      d.store.getReq(result.Key),
+		Res:      d.store.getRes(result.Key),
+		BookPath: d.store.getBookPath(result.Key),
 	}
 	o.setCond(d.store.getCond(result.Key))
 

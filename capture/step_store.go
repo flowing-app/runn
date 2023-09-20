@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	stepStoreReqKey  = "req"
-	stepStoreResKey  = "res"
-	stepStoreCondKey = "cond"
+	stepStoreReqKey      = "req"
+	stepStoreResKey      = "res"
+	stepStoreCondKey     = "cond"
+	stepStoreBookPathKey = "bookPath"
 )
 
 type stepStore map[string]map[string]any
@@ -128,6 +129,29 @@ func (ss stepStore) getCond(step string) string {
 	return cond
 }
 
-func (ss stepStore) saveCond(key, cond string) {
-	ss[key][stepStoreCondKey] = cond
+func (ss stepStore) saveCond(step, cond string) {
+	ss[step][stepStoreCondKey] = cond
+}
+
+func (ss stepStore) getBookPath(step string) string {
+	s := ss.get(step)
+	if s == nil {
+		return ""
+	}
+
+	v, ok := s[stepStoreBookPathKey]
+	if !ok {
+		return ""
+	}
+
+	path, ok := v.(string)
+	if !ok {
+		return ""
+	}
+
+	return path
+}
+
+func (ss stepStore) saveBookPath(step, bookPath string) {
+	ss[step][stepStoreBookPathKey] = bookPath
 }
