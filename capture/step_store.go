@@ -6,32 +6,31 @@ import (
 	"io"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 const (
-	storeReqKey  = "req"
-	storeResKey  = "res"
-	storeCondKey = "cond"
+	stepStoreReqKey  = "req"
+	stepStoreResKey  = "res"
+	stepStoreCondKey = "cond"
 )
 
 type stepStore map[string]map[string]any
 
-func (ss stepStore) get(key string) map[string]any {
-	v, ok := ss[key]
+func (ss stepStore) get(step string) map[string]any {
+	v, ok := ss[step]
 	if !ok {
 		return nil
 	}
 	return v
 }
 
-func (ss stepStore) getReq(key string) *stepOutReq {
-	step := ss.get(key)
-	if step == nil {
+func (ss stepStore) getReq(step string) *stepOutReq {
+	s := ss.get(step)
+	if s == nil {
 		return nil
 	}
 
-	v, ok := step[storeReqKey]
+	v, ok := s[stepStoreReqKey]
 	if !ok {
 		return nil
 	}
@@ -44,7 +43,7 @@ func (ss stepStore) getReq(key string) *stepOutReq {
 	return req
 }
 
-func (ss stepStore) saveReq(key string, req *http.Request) error {
+func (ss stepStore) saveReq(step string, req *http.Request) error {
 	url := req.URL.String()
 
 	header := make(map[string][]string)
@@ -66,18 +65,18 @@ func (ss stepStore) saveReq(key string, req *http.Request) error {
 		defer rc.Close()
 	}
 
-	ss[key][storeReqKey] = newStepOutReq(url, header, string(body))
+	ss[step][stepStoreReqKey] = newStepOutReq(url, header, string(body))
 
 	return nil
 }
 
-func (ss stepStore) getRes(key string) *stepOutRes {
-	step := ss.get(key)
-	if step == nil {
+func (ss stepStore) getRes(step string) *stepOutRes {
+	s := ss.get(step)
+	if s == nil {
 		return nil
 	}
 
-	v, ok := step[storeResKey]
+	v, ok := s[stepStoreResKey]
 	if !ok {
 		return nil
 	}
@@ -90,7 +89,7 @@ func (ss stepStore) getRes(key string) *stepOutRes {
 	return res
 }
 
-func (ss stepStore) saveRes(key string, res *http.Response) error {
+func (ss stepStore) saveRes(step string, res *http.Response) error {
 	status := strconv.Itoa(res.StatusCode)
 
 	header := make(map[string][]string)
@@ -105,35 +104,30 @@ func (ss stepStore) saveRes(key string, res *http.Response) error {
 	defer res.Body.Close()
 	res.Body = io.NopCloser(bytes.NewBuffer(body))
 
-	ss[key][storeResKey] = newStepOutRes(status, header, string(body))
+	ss[step][stepStoreResKey] = newStepOutRes(status, header, string(body))
 
 	return nil
 }
 
-func (ss stepStore) getCond(key string) []string {
-	step := ss.get(key)
-	if step == nil {
-		return nil
+func (ss stepStore) getCond(step string) string {
+	s := ss.get(step)
+	if s == nil {
+		return ""
 	}
 
-	v, ok := step[storeCondKey]
+	v, ok := s[stepStoreCondKey]
 	if !ok {
-		return nil
+		return ""
 	}
 
-	cond, ok := v.([]string)
+	cond, ok := v.(string)
 	if !ok {
-		return nil
+		return ""
 	}
 
 	return cond
 }
 
-func (ss stepStore) saveCond(key string, cond string) {
-	cond = strings.ReplaceAll(cond, "\n", " ")
-	conds := strings.Split(cond, "&&")
-	for i, c := range conds {
-		conds[i] = strings.Trim(c, " ")
-	}
-	ss[key][storeCondKey] = conds
+func (ss stepStore) saveCond(key, cond string) {
+	ss[key][stepStoreCondKey] = cond
 }

@@ -42,23 +42,29 @@ func (d *CmdOutJson) CaptureStepEnd(result *runn.StepResult) {
 		Skipped: result.Skipped,
 		Req:     d.store.getReq(result.Key),
 		Res:     d.store.getRes(result.Key),
-		Cond:    fmtEscapeds(d.store.getCond(result.Key)),
 	}
+	o.setCond(d.store.getCond(result.Key))
 
 	if result.Err != nil {
-		err := errors.Unwrap(result.Err).Error()
-		o.Err = fmtEscaped(err)
+		o.Err = errors.Unwrap(result.Err).Error()
 	}
+
+	fmtStepOut(&o)
 
 	b, _ := json.MarshalIndent(o, "", "  ")
 	fmt.Fprintf(d.out, "%s\n", b)
+}
+
+func fmtStepOut(out *stepOut) {
+	out.Cond = fmtEscapeds(out.Cond)
+	out.RawCond = fmtEscaped(out.RawCond)
+	out.Err = fmtEscaped(out.Err)
 }
 
 func (d *CmdOutJson) CaptureHTTPRequest(name string, req *http.Request, s *runn.Step) {
 	if _, ok := d.store[s.Key]; !ok {
 		panic(fmt.Sprintf("step '%s' is not inittied", s.Key))
 	}
-
 	if err := d.store.saveReq(s.Key, req); err != nil {
 		panic(fmt.Sprintf("failed to save request: %v", err))
 	}

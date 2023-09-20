@@ -29,13 +29,13 @@ type Step struct {
 	includeRunner *includeRunner
 	includeConfig *includeConfig
 	// operator related to Step
-	parent *operator
+	Parent *operator
 	debug  bool
 	result *StepResult
 }
 
 func newStep(key string, parent *operator) *Step {
-	return &Step{Key: key, parent: parent, debug: parent.debug}
+	return &Step{Key: key, Parent: parent, debug: parent.debug}
 }
 
 func (s *Step) generateTrail() Trail {
@@ -73,8 +73,8 @@ func (s *Step) generateTrail() Trail {
 
 func (s *Step) trails() Trails {
 	var trs Trails
-	if s.parent != nil {
-		trs = s.parent.trails()
+	if s.Parent != nil {
+		trs = s.Parent.trails()
 	}
 	trs = append(trs, s.generateTrail())
 	return trs

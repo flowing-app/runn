@@ -1,13 +1,17 @@
 package capture
 
+import "strings"
+
 type stepOut struct {
-	Key     string      `json:"key"`
-	Desc    string      `json:"desc"`
-	Skipped bool        `json:"skipped"`
-	Req     *stepOutReq `json:"req"`
-	Res     *stepOutRes `json:"res"`
-	Cond    []string    `json:"cond"`
-	Err     string      `json:"err"`
+	BookPath string      `json:"bookPath"`
+	Key      string      `json:"key"`
+	Desc     string      `json:"desc"`
+	Skipped  bool        `json:"skipped"`
+	Req      *stepOutReq `json:"req"`
+	Res      *stepOutRes `json:"res"`
+	Cond     []string    `json:"cond"`
+	RawCond  string      `json:"rawCond"`
+	Err      string      `json:"err"`
 }
 
 type stepOutReq struct {
@@ -36,4 +40,15 @@ func newStepOutRes(status string, header map[string][]string, body string) *step
 		Header: header,
 		Body:   body,
 	}
+}
+
+func (so *stepOut) setCond(cond string) {
+	replaced := strings.ReplaceAll(cond, "\n", " ")
+	conds := strings.Split(replaced, "&&")
+	for i, c := range conds {
+		conds[i] = strings.Trim(c, " ")
+	}
+
+	so.Cond = conds
+	so.RawCond = cond
 }
